@@ -1,0 +1,14 @@
+<pre>
+    <%= JSON.stringify(item,null,5) %>
+</pre>
+<form method="post" action="/transact/updateTransaction">
+    <input type="hidden" name="id" value="<%= item._id %>">
+    description: <input type="text" name="description" value="<%= item.description %>">
+    <br>
+    amount: <input type="number" name="amount" value="<%= item.amount %>">
+    <br>
+    category: <input type="text" name="category" value="<%= item.category %>">
+    <br>
+    <input type="hidden" name="date" value="<%= item.date %>">
+    <input type="submit" value="store">
+</form>
