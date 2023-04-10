@@ -4,7 +4,13 @@
   <div class="row">
     <div class="col">
         <p> Here is your list of transactions! </p>
-        <table>
+        <a class="btn btn-lg btn-primary" href="/transact/byCategory">Group by Category</a>
+        <a class="btn btn-lg btn-primary" href="/transact?sortBy=description">Sort by Description</a>
+        <a class="btn btn-lg btn-primary" href="/transact?sortBy=amount">Sort by Amount</a>
+        <a class="btn btn-lg btn-primary" href="/transact?sortBy=category">Sort by Category</a>
+        <a class="btn btn-lg btn-primary" href="/transact?sortBy=date">Sort by Date</a>
+        <br>
+        <table class="table table-bordered table-striped">
             <tr>
                 <th>Description</th>
                 <th>Amount</th>
@@ -35,11 +41,13 @@
         <br>
         <h1> Add a new transaction </h1>
         <form method="post" action="transact">
-            new transaction: <input type="text" name="description">
+            <input placeholder="description" type="text" name="description">
             <br>
-            amount: <input type="number" name="amount">
+            <input placeholder="amount" type="number" name="amount">
             <br>
-            category: <input type="text" name="category">
+            <input placeholder="category" type="text" name="category">
+            <br>
+            <input placeholder="mm/dd/yyyy" type="date" name="date">
             <br>
             <input type="submit" value="add transaction">
         </form>

@@ -15,12 +15,35 @@ isLoggedIn = (req,res,next) => {
   }
 }
 
-// get the value associated to the key
-router.get('/transact/',
+// opens transactList page
+router.get('/transact',
   isLoggedIn,
   async (req, res, next) => {
-    res.locals.items = await Transaction.find({userId:req.user._id})
+    sor = req.query.sortBy
+    //console.log("Sorting by: ",sor)
+    if (sor == "date") {
+      res.locals.items = await Transaction.find({userId:req.user._id}).sort({date : 1})
+    } else if (sor == "amount") {
+      res.locals.items = await Transaction.find({userId:req.user._id}).sort({amount : -1})
+    } else if (sor == "category") {
+      res.locals.items = await Transaction.find({userId:req.user._id}).sort({category : 1})
+    } else if (sor == "description") {
+      res.locals.items = await Transaction.find({userId:req.user._id}).sort({description : 1})
+    } else {
+      res.locals.items = await Transaction.find({userId:req.user._id})
+    }
     res.render('transactList');
+});
+
+router.get('/transact/byCategory',
+  isLoggedIn,
+  async (req, res, next) => {
+    let results = await Transaction.aggregate([
+        //{$match:{userId : req.user._id}},
+        {$group:{_id:'$category', totalAmount:{$sum:'$amount'}}},
+        {$sort:{totalAmount:-1}}
+      ])
+    res.render('transactListGrouped',{results});
 });
 
 // add a transaction
@@ -31,7 +54,7 @@ router.post('/transact',
         {description:req.body.description,
           amount: parseFloat(req.body.amount),
           category: req.body.category,
-          date: new Date(),
+          date: req.body.date,
           userId: req.user._id
         })
       await transact.save();
